@@ -1,6 +1,6 @@
 domain.duckdns.org {
     root c:\caddy 
-	proxy /tautulli 192.168.1.234:8181 { 
+	proxy /tautulli 192.168.1.234:8181 {    # has to be a sub-directory | disable SSL in Tautulli
         transparent
     }
     timeouts {
