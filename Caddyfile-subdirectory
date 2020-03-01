@@ -1,0 +1,53 @@
+
+domain.duckdns.org {
+      reauth {
+      path /sonarr
+      path /radarr
+      path /deluge
+      path /tautulli
+      path /netdata/
+      path /qbittorrent
+      failure redirect target=https://domain.duckdns.org/
+      upstream url=https://domain.duckdns.org/api/?v1/auth&group=4,cookies=true     # auth&group=4    4=user.....0=admin
+      }
+      proxy / 192.168.1.234:9983 {
+          transparent
+      }
+      proxy /sonarr 192.168.1.234:9292 {
+          transparent
+      }
+      proxy /radarr 192.168.1.234:7878 {
+          transparent
+      }
+      proxy /deluge 192.168.1.234:8112 {
+          transparent
+      }
+      proxy /qbittorrent 192.168.1.234:8383 {
+            header_upstream X-Forwarded-Host {host}:8383
+		    header_upstream -Origin
+		    header_upstream -Referer
+      }
+      proxy /tautulli 192.168.1.234:8181 {
+             header_upstream Host {host}
+             header_upstream X-Real-IP {remote}
+             header_upstream X-Forwarded-For {remote}
+             header_upstream X-Forwarded-Proto {scheme}
+             header_upstream X-Forwarded-Host {host}
+             header_upstream X-Forwarded-Ssl {on}
+      }
+      proxy /netdata/ 192.168.1.234:19999 {
+          transparent
+        without /netdata
+      }
+      proxy /plex 192.168.1.234:32400/web {
+          transparent
+      }
+      proxy /ombi 192.168.1.234:3579 {
+          transparent
+      }
+      reauth {
+      path /ombi
+      failure redirect target=https://domain.duckdns.org/
+      upstream url=https://domain.duckdns.org/api/?v1/auth&group=4,cookies=true
+      }
+}
